@@ -8,15 +8,28 @@ public class Target : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        if(health <= 0)
+        if(health > 0)
         {
-            Die();
+            health -= damage;
+            GetComponent<Animator>().Play("Zombie Reaction Hit"); ;
+        }
+        else
+        {
+            GetComponent<Animator>().Play("Falling Back Death");
+            StartCoroutine(Die());
         }
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
+        int time = 0;
+
+        while (time < 1000)
+        {
+            time += 1;
+            yield return null;
+        }
+
         Destroy(gameObject);
     }
 }

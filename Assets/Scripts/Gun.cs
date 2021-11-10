@@ -3,9 +3,9 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private float range = 100f;
+    [SerializeField] private float range = 80f;
     [SerializeField] private Camera cam = null;
-    [SerializeField] private ParticleSystem particleSystem = null;
+    [SerializeField] private ParticleSystem particleSys = null;
 
     private LineRenderer lineRenderer = null;
 
@@ -27,18 +27,18 @@ public class Gun : MonoBehaviour
 
     private void ShootGun()
     {
-        particleSystem.Play();
+        particleSys.Play();
 
         RaycastHit hit;
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
             lineRenderer.SetPositions(new Vector3[] { transform.position, hit.point });
-            Target target = hit.transform.GetComponent<Target>();
+            Target target = hit.collider.gameObject.GetComponent<Target>();
             Debug.Log(hit.transform.name);
+
             if (target != null)
             {
-
-
+                Debug.Log(target.transform.name);
                 target.TakeDamage(damage);
             }
         }
