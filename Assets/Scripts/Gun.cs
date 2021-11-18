@@ -32,7 +32,6 @@ public class Gun : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
-            lineRenderer.SetPositions(new Vector3[] { transform.position, hit.point });
             Target target = hit.collider.gameObject.GetComponent<Target>();
             Debug.Log(hit.transform.name);
 

@@ -16,6 +16,7 @@ public class CharController : MonoBehaviour
     [SerializeField] private float dashTime = 2f;
     [SerializeField] private float maxDistance = 0;
     [SerializeField] private LayerMask environment = default;
+    [SerializeField] private static float health = 1000;
 
     private Vector3 velocity;
     private bool isGrounded = false;
@@ -23,12 +24,20 @@ public class CharController : MonoBehaviour
     private Vector3 moveDir;
     private Camera cam = null;
     private LineRenderer lineRenderer = null;
+    private Vector3 hookPos = Vector3.zero;
+    private bool hook = false;
+    private bool dash = false;
+    private bool climbing = false;
+    private float startTime;
 
-    Vector3 hookPos = Vector3.zero;
-    bool hook = false;
-    bool dash = false;
-    bool climbing = false;
-    float startTime;
+    public static float Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+        }
+    }
 
     private void Start()
     {
@@ -227,5 +236,17 @@ public class CharController : MonoBehaviour
         }
 
         climbing = false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if(health > 0)
+        {
+            health -= damage;
+        }
+        else
+        {
+            Debug.Log("Player died!");
+        }
     }
 }
