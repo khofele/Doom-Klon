@@ -16,12 +16,13 @@ public class Target : MonoBehaviour
     private NavMeshAgent agent = null;
     private IEnumerator followCoroutine = null;
     private IEnumerator attackCoroutine = null;
-    private float damage = 10f;
+    private float damage = 0.025f;
     private bool enemyDead = false;
     private bool attackAllowed = false;
     private bool followAllowed = false;
-
     private int counter = 0;
+    private int hitCounter = 0;
+    private bool allowedToCountUp = true;
 
     private void Start()
     {
@@ -78,6 +79,11 @@ public class Target : MonoBehaviour
         }
         else
         {
+            if(allowedToCountUp == true)
+            {
+                UI.ZombieCounter += 1;
+                allowedToCountUp = false;
+            }
             enemyDead = true;
             StopCoroutine(attackCoroutine);
             StopCoroutine(followCoroutine);
@@ -144,8 +150,11 @@ public class Target : MonoBehaviour
         {
             if (agent.enabled && distance <= attackDistance)
             {
-                player.GetComponent<CharController>().TakeDamage(damage);
-                Debug.Log(CharController.Health);
+                hitCounter += 1;
+                if(hitCounter%50 == 0 && this.animator.GetCurrentAnimatorStateInfo(0).IsName("Zombie Attack"))
+                {
+                    player.GetComponent<CharController>().TakeDamage(damage);
+                }
             }
             else
             {

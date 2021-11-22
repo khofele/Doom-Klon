@@ -12,11 +12,12 @@ public class CharController : MonoBehaviour
     [SerializeField] private LayerMask groundMask = default;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float trampolineHeight = 8f;
-    [SerializeField] private float dashSpeed = 35f;
-    [SerializeField] private float dashTime = 2f;
+    [SerializeField] private float dashSpeed = 10000f;
+    [SerializeField] private float dashTime = 150f;
     [SerializeField] private float maxDistance = 0;
     [SerializeField] private LayerMask environment = default;
-    [SerializeField] private static float health = 1000;
+    [SerializeField] private static float health = 100;
+    [SerializeField] private UI uiManager = null;
 
     private Vector3 velocity;
     private bool isGrounded = false;
@@ -138,6 +139,7 @@ public class CharController : MonoBehaviour
         if (dash == true && Time.time < startTime + dashTime)
         {
             charController.Move(moveDir.normalized * dashSpeed * Time.deltaTime);
+            Debug.Log(moveDir.normalized);
         }
         else
         {
@@ -165,7 +167,7 @@ public class CharController : MonoBehaviour
         if (hook == true && Time.time < startTime + 0.5f)
         {
             Vector3 hookDir = (hookPos - transform.position).normalized;
-            charController.Move(hookDir * 15 * Time.deltaTime);
+            charController.Move(hookDir * 20 * Time.deltaTime);
             lineRenderer.SetPositions(new Vector3[] { transform.position, hookPos });
         }
         else
@@ -243,10 +245,12 @@ public class CharController : MonoBehaviour
         if(health > 0)
         {
             health -= damage;
+            uiManager.SetColor(health * 0.01f);
         }
         else
         {
             Debug.Log("Player died!");
+            uiManager.DisplayDeathMessage();
         }
     }
 }

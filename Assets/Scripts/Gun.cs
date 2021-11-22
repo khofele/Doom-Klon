@@ -33,11 +33,9 @@ public class Gun : MonoBehaviour
         if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
         {
             Target target = hit.collider.gameObject.GetComponent<Target>();
-            Debug.Log(hit.transform.name);
 
             if (target != null)
             {
-                Debug.Log(target.transform.name);
                 target.TakeDamage(damage);
             }
         }
